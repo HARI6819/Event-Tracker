@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django Google Sign In</title>
+    {% load static %}
+</head>
+<style>
+    body{
+        margin: 0;
+        box-sizing: border-box;
+        padding: 0;
+        background-color: rgb(19, 24, 32);
+    }
+    .container{
+        height: 90vh;
+        width: 30%;
+        background-color: rgb(38, 33, 57);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50% , -50%);
+        border-radius: 10px;
+    }
+    hr{
+        width: 40%;
+    }
+    p{
+        color: rgb(137, 147, 157);
+        font-size: 30px;
+        
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .sign{
+        color: rgb(137, 147, 157);
+        font-size: 18px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .login-btn{
+        width: 80%;
+        height: 6vh;
+        border-radius: 7px;
+        border: none;
+        outline: none;
+        background-color: blue;
+        cursor: pointer;
+    }
+
+</style>
+<body>
+    <div class="container">
+    {% load socialaccount %}
+    <center>
+        <br>
+    <p>Welcome Back!</p>
+    <img src="{% static 'images/login.png' %}" style="width: 70%; height: 70%;"><br><br>
+    <p>BIT Event Tracker</p><br>
+    <hr><br>
+
+    
+    <a  href="{% provider_login_url 'google' %}?next=/home1" ><button class="login-btn" style="color: white; text-decoration: none; font-size: 16px; font-weight: 700;">Google Sign In</button></a><br>
+    <p class="sign">Sign in with your BIT account</p>
+    </center>
+    </div>
+
+    
+</body>
+</html>

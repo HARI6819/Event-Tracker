@@ -1,0 +1,37 @@
+<div class="containerbox">
+    <div class="title">Edit</div>
+    <div class="content">
+      <form action="updatetechnical{{data.id}}" method="post" >
+        {% csrf_token %}
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Full Name</span>
+            <input type="text" placeholder="Name" required name="name" value="{{data.Name}}">
+          </div>
+          <div class="input-box">
+            <span class="details">Roll_no</span>
+            <input type="text" placeholder="Rollno" required name="roll" value="{{data.Roll_no}}">
+          </div>
+          <div class="input-box">
+            <span class="details">Email</span>
+            <input type="text" placeholder="Email" required name="email" value="{{data.Email}}">
+          </div>
+          <div class="input-box">
+            <span class="details">Event_name</span>
+            <input type="text" placeholder="Event Name" required name="e_name" value="{{data.Event_name}}">
+          </div>
+          <div class="input-box">
+            <span class="details">Event_cordinator</span>
+            <input type="text" placeholder="Event Cordinator" required name="e_cordinator" value="{{data.Event_cordinator}}">
+          </div>
+          <div class="input-box">
+            <span class="details">Event_date</span>
+            <input type="date" required name="e_date" value="{{ data.Event_date|date:'Y-m-d' }}">
+          </div>
+        </div>
+        <div class="button">
+          <input type="submit" value="Update" style="float: left;">
+        </div>
+      </form>
+    </div>
+  </div>

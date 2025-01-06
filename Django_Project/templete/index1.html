@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {%load static%}
+    <meta http-equiv="refresh" content="3;url=loginpage" />
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        background-image: url("{%static 'images/bg1.png'%}");
+        background-size: cover;
+    }
+    .welcome{
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50% , -50%);
+         color: white;
+         font-size: 40px;
+    }
+    @media screen and (max-width:540px) {
+        .welcome{
+            font-size: 30px;
+        }
+    }
+    @media screen and (max-width:424px) {
+        .welcome{
+            font-size: 28px;
+        }
+    }
+    @media screen and (max-width:380px) {
+        .welcome{
+            font-size: 25px;
+        }
+    }
+    @media screen and (max-width:335px) {
+        .welcome{
+            font-size: 24px;
+        }
+    }
+    @media screen and (max-width:320px) {
+        .welcome{
+            font-size: 20px;
+        }
+    }
+    @media screen and (max-width:265px) {
+        .welcome{
+            font-size: 18px;
+        }
+    }@media screen and (max-width:240px) {
+        .welcome{
+            font-size: 15px;
+        }
+    }
+</style>
+<body>
+    <h1 class="welcome" id="wel"></h1>
+    <script>
+        var i = 0;
+        var txt = 'Welcome Back!';
+        var speed = 70;
+        
+        function typeWriter() {
+          if (i < txt.length) {
+            document.getElementById("wel").innerHTML += txt.charAt(i);
+            i++;
+            setTimeout(typeWriter, speed);
+          }
+        }
+        
+        // Automatically call the function when the page loads
+        document.addEventListener('DOMContentLoaded', typeWriter);
+        </script>
+        
+</body>
+</html>

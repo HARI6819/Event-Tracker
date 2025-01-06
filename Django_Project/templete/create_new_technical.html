@@ -1,0 +1,38 @@
+<div class="containerbox">
+    <div class="title">Registration</div>
+    <div class="content">
+      <form action="technical" method="post" >
+        {% csrf_token %}
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Full Name</span>
+            <input type="text" placeholder="Name" required name="name">
+          </div>
+          <div class="input-box">
+            <span class="details">Roll_no</span>
+            <input type="text" placeholder="Rollno" required name="roll">
+          </div>
+          <div class="input-box">
+            <span class="details">Email</span>
+            <input type="text" placeholder="Email" required name="email">
+          </div>
+          <div class="input-box">
+            <span class="details">Event_name</span>
+            <input type="text" placeholder="Event Name" required name="e_name">
+          </div>
+          <div class="input-box">
+            <span class="details">Event_cordinator</span>
+            <input type="text" placeholder="Event Cordinator" required name="e_cordinator">
+          </div>
+          <div class="input-box">
+            <span class="details">Event_date</span>
+            <input type="date" placeholder="-dd-mm-yyyy-" required name="e_date">
+          </div>
+        </div>
+        <div class="button">
+          <input type="submit" value="Register" style="float: left;">
+          <input type="reset" value="Clear" style="float: left; background-color: red;">
+        </div>
+      </form>
+    </div>
+  </div>

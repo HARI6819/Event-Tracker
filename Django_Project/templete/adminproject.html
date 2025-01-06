@@ -1,0 +1,55 @@
+<div> 
+    <div  id="table-container">
+    <table id="customers">
+        
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Roll No</th>
+                    <th>Email</th>
+                    <th>Event Name</th>
+                    <th>Event Coordinator</th>
+                    <th>Event Date</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                    <th>Place</th>
+                    <th>District</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in datasproject %}
+                <tr>
+                    {% if data.Name and data.Roll_no and data.Email and data.Event_name and data.Event_cordinator and data.Event_date and data.Latitude and data.Longitude and data.Place and data.District %}
+                    <td>{{ data.id}}</td>
+                    <td>{{ data.Name }}</td>
+                    <td>{{ data.Roll_no }}</td>
+                    <td>{{ data.Email }}</td>
+                    <td>{{ data.Event_name }}</td>
+                    <td>{{ data.Event_cordinator }}</td>
+                    <td>{{ data.Event_date }}</td>
+                    <td>{{ data.Latitude}}</td>
+                    <td>{{ data.Longitude }}</td>
+                    <td>{{ data.Time }}</td>
+                    <td>{{ data.Date }}</td>
+                    <td>{{ data.Place }}</td>
+                    <td>{{ data.District }}</td>
+                    {% endif %}
+                    {% if data.Image %}
+                    <td>
+                        <img src="{{ data.Image.url }}" alt="Image" style="width:100px;height:auto;">
+                    </td>
+                    {% endif %}
+                   
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+  
+    </div>
+   
+</div>

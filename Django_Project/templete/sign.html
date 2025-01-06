@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {%load static%}
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+    }
+
+    body {
+        background-image: url("{%static 'images/bg1.png'%}");
+        background-size: cover;
+        
+        
+    }
+
+    .container {
+        height: 70%;
+        width: 100vw;
+        background-color: white;
+        position: absolute;
+        bottom: 0;
+        border-top-left-radius: 7%;
+        border-top-right-radius: 7%;
+    }
+
+    .heading {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 20px;
+        color: blue;
+    }
+
+    .field {
+        width: 85%;
+        height: 40px;
+        margin-left: 7.5%;
+        margin-top: 7%;
+        padding-left: 5px;
+        border: 2px solid rgb(238, 228, 228);
+        border-radius: 5px;
+        outline: none;
+    }
+
+    .para {
+        text-align: center;
+        font-size: 12px;
+        color: rgb(107, 151, 151);
+    }
+
+    .para span {
+        color: blue;
+        font-weight: 600;
+    }
+
+    .btn {
+        width: 85%;
+        margin-left: 7.5%;
+        height: 40px;
+        border-radius: 10px;
+        outline: none;
+        border: none;
+        background-color: rgb(124, 124, 230);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .divider {
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        color: rgb(107, 151, 151);
+        max-width: 85%;
+        margin-left: 7.5%;
+        margin-top: 10%;
+    }
+
+    .divider::before,
+    .divider::after {
+        flex: 1;
+        content: '';
+        padding: .1px;
+        background-color: rgb(241, 204, 204);
+        margin: 5px;
+    }
+
+
+    @media screen and (max-width:300px) {
+        .para {
+            font-size: 10px;
+        }
+    }
+
+    @media screen and (max-width:250px) {
+        .para {
+            font-size: 8px;
+        }
+    }
+
+
+    @media screen and (max-height:540px) {
+        .img {
+            position: absolute;
+            left: 45%;
+        }
+    }
+
+    @media screen and (max-height:520px) {
+        .img {
+            position: absolute;
+            left: 45%;
+        }
+
+        .field {
+            height: 35px;
+        }
+
+        .btn {
+            height: 35px;
+        }
+
+        .heading {
+            font-size: 18px;
+        }
+
+        .divider {
+            margin-top: 8%;
+        }
+    }
+
+    @media screen and (max-height:480px) {
+        .img {
+            position: absolute;
+            left: 45%;
+        }
+
+        .field {
+            height: 32px;
+        }
+
+        .btn {
+            height: 32px;
+        }
+
+        .heading {
+            font-size: 15px;
+        }
+    }
+
+    @media screen and (max-height:465px) {
+        .img {
+            position: absolute;
+            left: 45%;
+        }
+
+        .field {
+            height: 30px;
+        }
+
+        .btn {
+            height: 30px;
+        }
+
+        .heading {
+            font-size: 14px;
+        }
+
+        .divider {
+            margin-top: 6%;
+        }
+    }
+   
+    @media screen and (max-height:450px) {
+        .img {
+            position: absolute;
+            left: 45%;
+        }
+
+        .field {
+            height: 32px;
+        }
+
+        .btn {
+            height: 32px;
+        }
+
+        .heading {
+            font-size: 15px;
+        }
+
+        .container {
+            height: 75%;
+        }
+        
+    }
+   
+
+    
+    @media screen and (min-width:350px) {
+        .container {
+            position: absolute;
+            height: 75%;
+            width: 90vw;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 5%;
+        }
+
+        .field {
+            height: 40px;
+            margin-top: 2%;
+
+        }
+    }
+    @media screen and (min-width:400px) {
+        .container {
+            position: absolute;
+            height: 75%;
+            width: 80vw;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 5%;
+        }
+
+        .field {
+            height: 38px;
+
+        }
+    }
+    @media screen and (min-width:500px) {
+        .container {
+            position: absolute;
+            height: 75%;
+            width: 70vw;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 5%;
+        }
+
+        .field {
+            height: 38px;
+
+        }
+    }
+    @media screen and (min-width:600px) {
+        .container {
+            position: absolute;
+            height: 75%;
+            width: 60vw;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 5%;
+        }
+
+        .field {
+            height: 38px;
+
+        }
+    }
+    @media screen and (min-width:700px) {
+        .container {
+            position: absolute;
+            height: 75%;
+            width: 50vw;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 5%;
+        }
+
+        .field {
+            height: 38px;
+
+        }
+    }
+    @media screen and (min-width:750px) {
+        .container {
+            position: absolute;
+            height: 75%;
+            width: 40vw;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 5%;
+        }
+
+        .field {
+            height: 38px;
+
+        }
+    }
+
+    @media screen and (min-width:950px) {
+        .container {
+            position: absolute;
+            height: 75%;
+            width: 35vw;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 5%;
+        }
+
+        .field {
+            height: 45px;
+
+        }
+    }
+
+    @media screen and (min-width:1020px) {
+        .container {
+            position: absolute;
+            height: 75%;
+            width: 30vw;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 5%;
+        }
+
+        .field {
+            height: 45px;
+
+        }
+    }
+
+    
+</style>
+
+<body>
+
+    <div class="container">
+        <h2 class="heading">Get Started</h2>
+        <form action="index">
+            <input type="email" class="field" placeholder="Email" required><br>
+            <input type="password" class="field" placeholder="Password" required><br><br>
+            <p class="para"><input type="checkbox"> I agree to the processing of<span> Personal data</span></p><br>
+            <button type="submit" class="btn">Sign In</button><br>
+        </form>
+        <div class="divider">Sign up with</div>
+        <br><br>
+        <center>
+            <a href="mainpage"> <img src="{%static 'images/glogo.png'%}" style="height: 32px;" class="img"></a>
+
+        </center>
+
+    </div>
+</body>
+
+</html>

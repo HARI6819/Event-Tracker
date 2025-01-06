@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Capture and Download</title>
+<style>
+#camera {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+video {
+  width: 150%;
+  max-width: 120%;
+}
+
+#captureButton {
+  margin-top: 10px;
+}
+</style>
+</head>
+<body>
+
+<div id="camera">
+  <button id="startButton">Start Camera</button>
+  <video id="video" style="display: none;" autoplay></video>
+  <button id="captureButton" style="display: none;">Capture and Download</button>
+</div>
+
+<script>
+const video = document.getElementById('video');
+const captureButton = document.getElementById('captureButton');
+const startButton = document.getElementById('startButton');
+
+startButton.addEventListener('click', () => {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      video.srcObject = stream;
+      video.style.display = 'block'; // Show the video element
+      captureButton.style.display = 'block'; // Show the capture button
+      startButton.style.display = 'none'; // Hide the start button
+    })
+    .catch(error => {
+      console.error('Error accessing the camera: ', error);
+    });
+});
+
+captureButton.addEventListener('click', () => {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  
+  // Convert the canvas image to a data URL
+  const imageDataURL = canvas.toDataURL('image/png');
+  
+  // Add geolocation data to the image
+  navigator.geolocation.getCurrentPosition(position => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const dateTime = new Date().toLocaleString();
+    
+    // Create a new canvas to draw the text
+    const textCanvas = document.createElement('canvas');
+    textCanvas.width = canvas.width;
+    textCanvas.height = canvas.height;
+    const textContext = textCanvas.getContext('2d');
+    textContext.drawImage(canvas, 0, 0);
+    
+    // Add semi-transparent black background for text
+    textContext.fillStyle = 'rgba(0, 0, 0, 0.3)';
+    textContext.fillRect(0, 0, textCanvas.width, 80); // Adjust height as needed
+    
+    // Add text to the new canvas
+    textContext.font = '14px Arial';
+    textContext.fillStyle = 'white';
+    textContext.fillText(`Latitude: ${latitude}`, 10, 20);
+    textContext.fillText(`Longitude: ${longitude}`, 10, 40);
+    textContext.fillText(`Date & Time: ${dateTime}`, 10, 60);
+    
+    // Convert the text canvas to a data URL
+    const textDataURL = textCanvas.toDataURL('image/png');
+    
+    // Create an anchor element with download attribute to trigger download
+    const downloadLink = document.createElement('a');
+    downloadLink.href = textDataURL;
+    downloadLink.download = 'captured_image_with_info.png'; // File name for download
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }, error => {
+    console.error('Error getting geolocation:', error);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login-Page</title>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css'>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css'>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
+    
+    {%load static%}
+
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        overflow: hidden;
+        font-family: sans-serif;
+    }
+
+    body {
+        background-image: url("{%static 'images/bgimg.jpg'%}");
+        background-size: cover;
+    }
+
+    #bgopacity {
+        height: 100vh;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.555);
+        z-index: -1;
+    }
+
+    .login_box {
+        height: 70%;
+        width: 25vw;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 50%;
+        left: 50%;
+        opacity: 80%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.586);
+    }
+
+    .form_box {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .form_box img.bg {
+        height: 100%;
+        width: 100%;
+    }
+
+    .inputs {
+        height: 60%;
+        width: 80%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .inputs input {
+        margin-top: 10%;
+        height: 12%;
+        width: 70%;
+        border: none;
+        outline: none;
+        padding-left: 20px;
+        background-color: transparent;
+        border-bottom: 2px solid rgb(133, 135, 252);
+    }
+
+    .bx {
+        position: relative;
+        left: 5%;
+        top: .5%;
+    }
+
+    .login_btn,
+    .login_btng {
+        height: 15%;
+        width: 80%;
+        border-radius: 5px;
+        margin-left: 10px;
+        margin-top: 15px;
+        background-color: white;
+        text-align: center;
+        font-weight: 600;
+        color: rgb(136, 136, 240);
+        font-size: 15px;
+        cursor: pointer;
+        border-color: rgb(146, 146, 228);
+    }
+
+    .login_box.active .login {
+        transform: translateX(-100%);
+        opacity: 0;
+        transition: 0.6s ease;
+    }
+
+    .login_box.active .register {
+        transform: translateX(0);
+        opacity: 1;
+        transition: 0.6s ease;
+    }
+
+    .form_box.register {
+        transform: translateX(100%);
+        opacity: 0;
+        transition: 0.6s ease;
+    }
+
+    button {
+        margin-top: 20px;
+        max-width: 320px;
+        display: flex;
+        padding: 0.5rem 1.4rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 700;
+        text-align: center;
+        text-transform: uppercase;
+        vertical-align: middle;
+        align-items: center;
+        border-radius: 0.5rem;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        gap: 0.75rem;
+        color: rgb(65, 63, 63);
+        background-color: #fff;
+        cursor: pointer;
+        transition: all .6s ease;
+    }
+
+    .button svg {
+        height: 24px;
+    }
+
+    button:hover {
+        transform: scale(1.02);
+    }
+</style>
+
+<body>
+    <p id="bgopacity"></p>
+    <div class="login_box logreg-box">
+        <!-- Login Form -->
+        <div class="form_box login">
+            <img src="{% static 'images/loginbg.png' %}" class="bg">
+            <form>
+                {% csrf_token %}
+                <div class="inputs">
+                    <i class='bx bxs-user' style="color: rgb(133, 135, 252);"></i>
+                    <input type="text" placeholder="Username/Email" name="login-username" id="login-email"><br>
+                    <i class='bx bxs-lock-alt' style="color: rgb(133, 135, 252);"></i>
+                    <input type="password" placeholder="Password" name="login-pass" id="login-password"><br>
+                    <button type="submit" class="login_btn" id="login-submit">LOGIN NOW</button>
+                    <button class="button" id="login">
+                        <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262">
+                            <path fill="#4285F4"
+                                d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027">
+                            </path>
+                            <path fill="#34A853"
+                                d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1">
+                            </path>
+                            <path fill="#FBBC05"
+                                d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782">
+                            </path>
+                            <path fill="#EB4335"
+                                d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251">
+                            </path>
+                        </svg>
+                        Continue with Google
+                    </button><br>
+                    <p style="margin-left: 18px; font-size: 13px;">Don't have an account? <a href="#"
+                            class="register-link">Create account</a></p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Register Form -->
+        <div class="form_box register">
+            <img src="{% static 'images/loginbg.png' %}" class="bg">
+            <form>
+                {% csrf_token %}
+                <div class="inputs">
+                    <i class='bx bxs-user' style="color: rgb(133, 135, 252);"></i>
+                    <input type="text" placeholder="Username/Email" name="register-username" id="register-email"><br>
+                    <i class='bx bxs-lock-alt' style="color: rgb(133, 135, 252);"></i>
+                    <input type="password" placeholder="Password" name="register-pass" id="register-password"><br>
+                    <button type="submit" class="login_btn" id="register-submit">CREATE ACCOUNT</button><br><br>
+                    <p style="text-align: center; margin-right: 15px; font-size: 13px;">Already have an account? <a
+                            href="#" class="login-link">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAogikAqDEBAR8Avf-XGA8xZ3NGUMiZFzA",
+            authDomain: "login-c173c.firebaseapp.com",
+            projectId: "login-c173c",
+            storageBucket: "login-c173c.appspot.com",
+            messagingSenderId: "495312378710",
+            appId: "1:495312378710:web:c0032f06b2d2c1c5ac54f7"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+
+        // Registration Function
+        const registerSubmit = document.getElementById('register-submit');
+        registerSubmit.addEventListener("click", function (event) {
+            event.preventDefault();
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+
+            if (email && password) {
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        alert("Creating Account...");
+                        window.location.href = "http://127.0.0.1:8000/loginpage";
+                    })
+                    .catch((error) => {
+                        alert(error.message);
+                    });
+            } else {
+                alert("Please fill in all fields.");
+            }
+        });
+
+        // Login Function
+        const loginSubmit = document.getElementById('login-submit');
+        loginSubmit.addEventListener("click", function (event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            if (email && password) {
+                signInWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        alert("Logging in...");
+                        window.location.href = "http://127.0.0.1:8000/home1";
+                    })
+                    .catch((error) => {
+                        alert(error.message);
+                        window.location.href = "http://127.0.0.1:8000";
+                    });
+            } else {
+                alert("Please fill in all fields.");
+            }
+        });
+        //google login
+        const loginButton = document.getElementById('login');
+        const logoutButton = document.getElementById('logout');
+        const userDetails = document.getElementById('user-details');
+        const userName = document.getElementById('user-name');
+        const userPic = document.getElementById('user-pic');
+        // Login Event
+        loginButton.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then(result => {
+                    const user = result.user;
+                    displayUser(user);
+                })
+                .catch(error => {
+                    console.error("Error during sign in: ", error);
+                });
+        });
+
+        // Logout Event
+        logoutButton.addEventListener('click', () => {
+            auth.signOut()
+                .then(() => {
+                    hideUser();
+                })
+                .catch(error => {
+                    console.error("Error during sign out: ", error);
+                });
+        });
+
+        // Display User Info
+        const displayUser = (user) => {
+            userName.textContent = `Hello, ${user.displayName}`;
+            userPic.src = user.photoURL;
+            userDetails.style.display = '';
+            loginButton.style.display = 'none';
+            logoutButton.style.display = '';
+        };
+
+        // Hide User Info
+        const hideUser = () => {
+            userDetails.style.display = 'none';
+            loginButton.style.display = '';
+            logoutButton.style.display = 'none';
+        };
+
+        // Firebase Auth State Change Listener
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                displayUser(user);
+            } else {
+                hideUser();
+            }
+        });
+
+        // Toggle between Login and Register
+        const logregBox = document.querySelector('.logreg-box');
+        const loginLink = document.querySelector('.login-link');
+        const registerLink = document.querySelector('.register-link');
+
+        registerLink.addEventListener('click', () => {
+            logregBox.classList.add('active');
+        });
+
+        loginLink.addEventListener('click', () => {
+            logregBox.classList.remove('active');
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

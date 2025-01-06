@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Capture and Download</title>
+<style>
+#camera {
+  width: 50vw;
+  margin: 0 auto;
+  text-align: center;
+
+}
+
+video {
+  width: 50vw;
+}
+
+#captureButton {
+  margin-top: 10px;
+  padding: 2% 10%;
+  background-color: green;
+  color: white;
+  font-weight: 500;
+  border-radius: 5px;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div class="geotag">
+  <center>
+  <h2>Geotag Photo</h2></center>
+</div>
+<div id="camera">
+  <video id="video" autoplay></video>
+  <button id="captureButton">Capture</button>
+</div>
+
+<script>
+
+  
+const video = document.getElementById('video');
+const captureButton = document.getElementById('captureButton');
+
+// Function to request camera and location permissions
+function requestPermissions() {
+  return Promise.all([
+    navigator.mediaDevices.getUserMedia({ video: true }),
+    navigator.permissions.query({ name: 'geolocation' })
+  ])
+  .then(([stream, geolocation]) => {
+    if (geolocation.state === 'granted') {
+      video.srcObject = stream;
+    } else {
+      throw new Error('Geolocation permission not granted');
+    }
+  });
+}
+
+// Request permissions when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  requestPermissions()
+    .catch(error => {
+      console.error('Error accessing camera or geolocation:', error);
+    });
+});
+
+captureButton.addEventListener('click', () => {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  
+  // Convert the canvas image to a data URL
+  const imageDataURL = canvas.toDataURL('image/png');
+  
+  // Add geolocation data to the image
+  navigator.geolocation.getCurrentPosition(position => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const dateTime = new Date().toLocaleString();
+    
+    // Create a new canvas to draw the text
+    const textCanvas = document.createElement('canvas');
+    textCanvas.width = canvas.width;
+    textCanvas.height = canvas.height;
+    const textContext = textCanvas.getContext('2d');
+    textContext.drawImage(canvas, 0, 0);
+    
+    // Add semi-transparent black background for text
+    textContext.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    textContext.fillRect(0, 0, textCanvas.width, 80); // Adjust height as needed
+    
+    // Add text to the new canvas
+    textContext.font = '14px Arial';
+    textContext.fillStyle = 'white';
+    textContext.fillText(`Latitude: ${latitude}`, 10, 20);
+    textContext.fillText(`Longitude: ${longitude}`, 10, 40);
+    textContext.fillText(`Date & Time: ${dateTime}`, 10, 60);
+    
+    // Convert the text canvas to a data URL
+    const textDataURL = textCanvas.toDataURL('image/png');
+    
+    // Create an anchor element with download attribute to trigger download
+    const downloadLink = document.createElement('a');
+    downloadLink.href = textDataURL;
+    downloadLink.download = 'captured_img.png'; // File name for download
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    // Redirect to update.html
+    window.location.href = 'uploadproject{{datass.id}}';
+  }, error => {
+    console.error('Error getting geolocation:', error);
+  });
+});
+</script>
+
+</body>
+</html>

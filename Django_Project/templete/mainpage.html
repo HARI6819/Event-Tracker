@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>My Single-Page Application</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <script src="{% static 'myapp/js/app.js' %}"></script>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body {
+    background: #e4e9f7d5;
+  }
+
+  nav {
+    height: 10vh;
+    width: 100%;
+    background-color: rgb(36, 115, 227);
+  }
+
+  nav h1 {
+    margin-left: 4%;
+    line-height: 10vh;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 10vh;
+    height: 100vh;
+    width: 5%;
+    background: #ffffff;
+    padding: .2% .8%;
+    z-index: 99;
+    transition: all 0.5s ease;
+    z-index: 200;
+  }
+
+  .sidebar.open {
+    width: 250px;
+  }
+
+  .sidebar .logo-details {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .sidebar .logo-details .icon {
+    opacity: 0;
+    transition: all 0.5s ease;
+  }
+
+  .sidebar .logo-details .logo_name {
+    color: #000000;
+    font-size: 20px;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.5s ease;
+  }
+
+  .sidebar.open .logo-details .icon,
+  .sidebar.open .logo-details .logo_name {
+    opacity: 1;
+  }
+
+  .sidebar .logo-details #btn {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    font-size: 22px;
+    transition: all 0.4s ease;
+    font-size: 23px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.5s ease;
+  }
+
+  .sidebar.open .logo-details #btn {
+    text-align: right;
+  }
+
+  .sidebar i {
+    color: #000000;
+    height: 60px;
+    min-width: 50px;
+    font-size: 28px;
+    text-align: center;
+    line-height: 60px;
+  }
+
+  .sidebar .nav-list {
+    margin-top: 20px;
+    height: 100%;
+  }
+
+  .sidebar li {
+    position: relative;
+    margin: 8px 0;
+    list-style: none;
+  }
+
+  .sidebar li .tooltip {
+    position: absolute;
+    top: -20px;
+    left: calc(100% + 15px);
+    z-index: 3;
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 0;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: 0s;
+  }
+
+  .sidebar li:hover .tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transition: all 0.4s ease;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .sidebar.open li .tooltip {
+    display: none;
+  }
+
+  .sidebar input {
+    font-size: 15px;
+    color: #FFF;
+    font-weight: 400;
+    outline: none;
+    height: 50px;
+    width: 100%;
+    width: 50px;
+    border: none;
+    border-radius: 12px;
+    transition: all 0.5s ease;
+    background: #1d1b31;
+  }
+
+  .sidebar.open input {
+    padding: 0 20px 0 50px;
+    width: 100%;
+  }
+
+  .sidebar .bx-search {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 22px;
+    background: #1d1b31;
+    color: #FFF;
+  }
+
+  .sidebar.open .bx-search:hover {
+    background: #1d1b31;
+    color: #FFF;
+  }
+
+  .sidebar .bx-search:hover {
+    background: #FFF;
+    color: #11101d;
+  }
+
+  .sidebar li a {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.4s ease;
+
+  }
+
+  .sidebar li a:hover {
+    background: #9681f23e;
+  }
+
+  .sidebar li a .links_name {
+    color: #000000;
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.4s;
+  }
+
+  .sidebar.open li a .links_name {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .sidebar li a:hover .links_name,
+  .sidebar li a:hover i {
+    transition: all 0.5s ease;
+    color: blue;
+  }
+
+  .sidebar li i {
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    border-radius: 12px;
+  }
+
+  .sidebar li.profile {
+    position: fixed;
+    height: 60px;
+    width: 78px;
+    left: 0;
+    bottom: -8px;
+    padding: 10px 14px;
+    background: #d3d0f4;
+    transition: all 0.5s ease;
+    overflow: hidden;
+  }
+
+  .sidebar.open li.profile {
+    width: 250px;
+  }
+
+  .sidebar li .profile-details {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .sidebar li img {
+    height: 45px;
+    width: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 10px;
+  }
+
+  .sidebar li.profile .name,
+  .sidebar li.profile .job {
+    font-size: 15px;
+    font-weight: 400;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  .sidebar li.profile .job {
+    font-size: 12px;
+  }
+
+  .sidebar .profile #log_out {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background: #f7f7f7;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 0px;
+    transition: all 0.5s ease;
+  }
+
+  .sidebar.open .profile #log_out {
+    width: 50px;
+    background: none;
+  }
+
+  .home-section {
+    position: relative;
+    min-height: 100vh;
+    top: 0;
+    left: 78px;
+    width: calc(100% - 78px);
+    transition: all 0.5s ease;
+    z-index: 2;
+  }
+
+  .sidebar.open~.home-section {
+    left: 250px;
+    width: calc(100% - 250px);
+  }
+
+  .home-section .text {
+    display: inline-block;
+    color: #11101d;
+    font-size: 25px;
+    font-weight: 500;
+    margin: 18px
+  }
+
+  @media (max-width: 420px) {
+    .sidebar li .tooltip {
+      display: none;
+    }
+  }
+
+  .info_box {
+    height: 10vh;
+    border-radius: 8px;
+    width: 95%;
+    background-image: linear-gradient(45deg, rgb(89, 89, 244), rgb(195, 195, 248));
+    position: absolute;
+    top: 10vh;
+  }
+
+
+
+  .info_name {
+    line-height: 10vh;
+    margin-left: 2%;
+    font-weight: 400;
+    position: relative;
+    top: 5%;
+  }
+
+
+  .grid {
+    display: grid;
+    height: 20%;
+    width: 95%;
+    grid-template-columns: auto auto auto auto;
+    gap: 1%;
+    position: absolute;
+    top: 35%;
+    left: 47.5%;
+    transform: translate(-50%, -50%);
+  }
+
+  .grid .one {
+    background: white;
+    align-content: center;
+    align-items: center;
+    padding-left: 10%;
+    height: 100%;
+    width: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.204);
+  }
+
+  .grid .two {
+    background: white;
+    align-content: center;
+    align-items: center;
+    padding-left: 10%;
+    height: 100%;
+    width: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.204);
+  }
+
+  .grid .four {
+    background: white;
+    align-content: center;
+    align-items: center;
+    padding-left: 10%;
+    height: 100%;
+    width: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.204);
+  }
+
+  .grid .three {
+    background: white;
+    align-content: center;
+    align-items: center;
+    padding-left: 10%;
+    height: 100%;
+    width: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.204);
+  }
+
+  .grid .one:active {
+    background: linear-gradient(35deg, rgb(255, 255, 255), rgb(226, 220, 181));
+  }
+
+  .grid .two:active {
+    background: linear-gradient(35deg, rgb(255, 255, 255), rgb(226, 220, 181));
+  }
+
+  .grid .three:active {
+    background: linear-gradient(35deg, rgb(255, 255, 255), rgb(226, 220, 181));
+  }
+
+  .grid .four:active {
+    background: linear-gradient(35deg, rgb(255, 255, 255), rgb(226, 220, 181));
+  }
+
+  .grid .one .circle {
+    height: 8vh;
+    width: 22%;
+    background: #789b5269;
+    float: left;
+    border-radius: 50%;
+    margin-right: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .grid .two .circle {
+    height: 8vh;
+    width: 22%;
+    background: #789b5269;
+    float: left;
+    border-radius: 50%;
+    margin-right: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .grid .three .circle {
+    height: 8vh;
+    width: 22%;
+    background: #789b5269;
+    float: left;
+    border-radius: 50%;
+    margin-right: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .grid .four .circle {
+    height: 8vh;
+    width: 22%;
+    background: #789b5269;
+    float: left;
+    border-radius: 50%;
+    margin-right: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .grid .one .circle i {
+    color: green;
+    font-size: 35px;
+  }
+
+  .grid .two .circle i {
+    color: green;
+    font-size: 35px;
+  }
+
+  .grid .three .circle i {
+    color: green;
+    font-size: 35px;
+  }
+
+  .grid .four .circle i {
+    color: green;
+    font-size: 35px;
+  }
+
+  .containermain {
+    height: 90%;
+    width: 90%;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    z-index: 100;
+
+  }
+
+  p span {
+    color: red;
+  }
+
+
+  .create_btn {
+    background-color: blue;
+    color: white;
+    text-decoration: none;
+    padding: 1% 4%;
+    position: absolute;
+    top: 6%;
+    right: 8%;
+    font-weight: 700;
+    border-radius: 5px;
+  }
+
+  #table-container {
+    position: absolute;
+    top: 15%;
+    width: 90%;
+    max-height: 70vh;
+    /* Set the desired maximum height for the table container */
+    overflow: auto;
+    /* Enable both vertical and horizontal scrolling */
+    margin: 15px 5%;
+    /* Adjust margin as needed */
+  }
+
+  #table-container::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    /* Adjust the width as needed */
+    background-color: transparent;
+    /* Set the background color of the scrollbar track */
+  }
+
+  /* Style the scrollbar thumb */
+  #table-container::-webkit-scrollbar-thumb {
+    background-color: rgb(202, 199, 199);
+    /* Set the background color of the scrollbar thumb */
+  }
+
+
+  #customers {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #customers td,
+  #customers th {
+    border: 1px solid #a3a1a1;
+    padding: 8px;
+  }
+
+  #customers tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  #customers tr:hover {
+    background-color: #ddd;
+  }
+
+  #customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #04AA6D;
+    color: white;
+  }
+
+  @media screen and (max-height:500px) {
+
+    #customers td,
+    #customers th {
+      font-size: 10px;
+    }
+
+    .create_btn {
+      top: 8%;
+      padding: 1% 4%;
+      font-size: 12px;
+    }
+  }
+
+  @media screen and (max-width:500px) {
+    .container {
+      width: 32%;
+    }
+
+    .create_btn {
+      top: 12%;
+      padding: 1% 4%;
+      font-size: 12px;
+    }
+
+    #customers td,
+    #customers th {
+      font-size: 10px;
+    }
+
+    .grid .one {
+      background-color: red;
+      height: 100%;
+      width: 60%;
+      font-size: 10px;
+    }
+
+    .grid .two {
+      height: 100%;
+      width: 60%;
+      font-size: 10px;
+    }
+
+    .grid .three {
+      height: 100%;
+      width: 60%;
+      font-size: 10px;
+    }
+
+    .grid {
+      left: 50%;
+      width: 55%;
+      gap: 5%;
+      height: 25%;
+      top: 25%;
+      grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+    }
+
+    .grid p {
+      font-size: 10px;
+    }
+
+    .container p {
+      font-size: 8px;
+    }
+
+    .last p {
+
+      width: 32%;
+      font-size: 8px;
+    }
+
+    .containermain {
+      left: 20%;
+      width: 77%;
+    }
+  }
+
+
+  .table1 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+
+  .containerbox {
+    max-width: 90%;
+    width: 100%;
+    background-color: #e4eeee;
+    padding: 25px 30px;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    height: 90%;
+    overflow: scroll;
+
+  }
+
+  .containerbox .title {
+    font-size: 25px;
+    font-weight: 500;
+    position: relative;
+  }
+
+  .containerbox .title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 30px;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+  }
+
+  .content form .user-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0 12px 0;
+  }
+
+  form .user-details .input-box {
+    margin-bottom: 15px;
+    width: calc(100% / 2 - 20px);
+  }
+
+  form .input-box span.details {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  .user-details .input-box input {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+  }
+
+  form .gender-details .gender-title {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  form .category {
+    display: flex;
+    width: 80%;
+    margin: 14px 0;
+    justify-content: space-between;
+  }
+
+  form .category label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  form .category label .dot {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background: #d9d9d9;
+    border: 5px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  #dot-1:checked~.category label .one,
+  #dot-2:checked~.category label .two,
+  #dot-3:checked~.category label .three {
+    background: #9b59b6;
+    border-color: #d9d9d9;
+  }
+
+  form input[type="radio"] {
+    display: none;
+  }
+
+  form .button {
+    height: 45px;
+    margin: 35px 0
+  }
+
+  form .button input {
+    height: 80%;
+    width: 13%;
+    margin-right: 3%;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: green;
+  }
+
+  form .button input:active {
+    /* transform: scale(0.99); */
+    background: rgba(0, 0, 255, 0.423);
+  }
+
+  @media(max-width: 1000px) {
+    form .button input {
+      font-size: 13px;
+    }
+  }
+
+  @media(max-width: 1150px) {
+    .sidebar {
+      padding: .2% .3%;
+    }
+  }
+
+
+  @media(max-width: 800px) {
+    .user-details {
+      font-size: 13px;
+    }
+
+    .container p {
+      font-size: 8px;
+    }
+
+    form .button input {
+      width: 20%;
+      height: 100%;
+    }
+
+    .containerbox .title {
+      font-size: 20px;
+    }
+
+    .containerbox .title::before {
+      width: 20px;
+    }
+
+    .user-details .input-box input {
+      height: 30px;
+    }
+
+    form .button {
+      height: 35px;
+      margin: 35px 0
+    }
+
+    form .button input {
+      font-size: 13px;
+      width: 25%;
+    }
+  }
+
+  @media(max-width:500px) {
+    form .button input {
+      width: 45%;
+      font-size: 10px;
+    }
+  }
+
+  @media(max-width: 584px) {
+    .containerbox {
+      max-width: 90%;
+    }
+
+    form .user-details .input-box {
+      margin-bottom: 15px;
+      width: 100%;
+    }
+
+    form .category {
+      width: 100%;
+    }
+
+    .content form .user-details {
+      max-height: 300px;
+      overflow-y: scroll;
+    }
+
+    .user-details::-webkit-scrollbar {
+      width: 5px;
+    }
+  }
+
+  @media(max-width: 459px) {
+    .containerbox .content .category {
+      flex-direction: column;
+    }
+  }
+
+  input[type=file]::file-selector-button {
+    background-color: rgb(255, 255, 255);
+    margin-top: 2%;
+    padding: 4% 15%;
+    border-radius: 10px;
+    cursor: pointer;
+
+  }
+
+  .formcontrol {
+    font-size: 20px;
+  }
+
+  #user-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #user-details img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #ddd;
+  }
+
+  #user-name {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+</style>
+
+<body>
+
+  <div id="app"></div>
+  <nav>
+    <h1>Event Tracker </h1>
+  </nav>
+  <div class="sidebar">
+    <div class="logo-details">
+      <i class='bx bx-podcast icon'></i>
+      <div class="logo_name">Event Tracker</div>
+      <i class="bx bx-menu" id="btn"></i>
+    </div>
+    <ul class="nav-list">
+      <li>
+        <a href="home1">
+          <i class="bx bx-grid-alt"></i>
+          <span class="links_name">Dashboard</span>
+        </a>
+        <span class="tooltip">Dashboard</span>
+      </li>
+      <li>
+        <a href="paper1">
+          <i class='bx bx-receipt'></i>
+          <span class="links_name">Paper</span>
+        </a>
+        <span class="tooltip">Paper</span>
+      </li>
+      <li>
+        <a href="project1">
+          <i class='bx bxs-cube'></i>
+          <span class="links_name">Project</span>
+        </a>
+        <span class="tooltip">Project</span>
+      </li>
+      <li>
+        <a href="technical">
+          <i class='bx bx-code-block'></i>
+          <span class="links_name">Technical</span>
+        </a>
+        <span class="tooltip">Technical</span>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bx-chat'></i>
+          <span class="links_name">Contact us</span>
+        </a>
+        <span class="tooltip">Contact us</span>
+      </li>
+      <!-- <li>
+        <a href="#">
+          <i class="bx bx-cart-alt"></i>
+          <span class="links_name">Order</span>
+        </a>
+        <span class="tooltip">Order</span>
+      </li>
+      <li>
+        <a href="#">
+          <i class="bx bx-heart"></i>
+          <span class="links_name">Saved</span>
+        </a>
+        <span class="tooltip">Saved</span>
+      </li>
+      <li>
+        <a href="#">
+          <i class="bx bx-cog"></i>
+          <span class="links_name">Setting</span>
+        </a>
+        <span class="tooltip">Setting</span>
+      </li> -->
+      <li class="profile">
+        <div class="profile-details">
+          {% if user.is_authenticated %}
+          {% for account in user.socialaccount_set.all %}
+          <img src="{{ account.extra_data.picture }}" alt="Profile Picture" />
+          <div class="name_job">
+            <div class="name"> {{ account.extra_data.name }}</div>
+          </div>
+          {% endfor %}
+          {% endif %}
+        </div>
+        <a href="{% url 'account_logout' %}"><i class="bx bx-log-out" id="log_out"></i></a>
+      </li>
+    </ul>
+  </div>
+</body>
+
+</html>
+
+<script>
+
+
+  // Function to get current position and fill the fields
+  function fillFields() {
+    navigator.geolocation.getCurrentPosition(position => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const amPm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12; // Convert hours to 12-hour format
+
+      const time = hours + ':' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds + ' ' + amPm;
+      const date = now.getFullYear() + '-' + ((now.getMonth() + 1) < 10 ? '0' : '') + (now.getMonth() + 1) + '-' + (now.getDate() < 10 ? '0' : '') + now.getDate();
+
+      // Reverse Geocoding to get place and district name
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
+        .then(response => response.json())
+        .then(data => {
+          const placeName = data.address.city || data.address.town || data.address.village || data.address.hamlet || "Unknown";
+          const districtName = data.address.suburb || data.address.neighbourhood || data.address.city_district || data.address.district || data.address.county || "Unknown";
+
+          // Fill the fields with obtained values
+          document.getElementById('latitude').value = latitude;
+          document.getElementById('longitude').value = longitude;
+          document.getElementById('place').value = placeName;
+          document.getElementById('district').value = districtName;
+          document.getElementById('time').value = time;
+          document.getElementById('date').value = date;
+
+        })
+        .catch(error => {
+          console.error('Error getting location information:', error);
+        });
+    }, error => {
+      console.error('Error getting geolocation:', error);
+    });
+  }
+
+  // Automatically fill the fields when the page loads
+  window.addEventListener('load', fillFields);
+
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const app = document.getElementById('app');
+
+    // Function to render the appropriate content based on the route
+    function renderContent() {
+      const path = window.location.pathname;
+      let content;
+      if (path === '/paper1') {
+        content = `<div class=containermain>{% include "paper.html" %}</div>`;
+      } else if (path === '/project1') {
+        content = `<div class=containermain>{% include "project.html" %}</div>`;
+      } else if (path === '/technical') {
+        content = `<div class=containermain>{% include "technical.html" %}</div>`;
+      } else if (path === '/home1') {
+        content = `<div class=containermain>{% include "home1.html" %}</div>`;
+      } else if (path === '/createnew') {
+        content = `<div class=containermain>{% include "create_new_paper.html" %}</div>`
+      } else if (path === '/createnewproject') {
+        content = `<div class=containermain>{% include "create_new_project.html" %}</div>`
+      } else if (path === '/createnewtechnical') {
+        content = `<div class=containermain>{% include "create_new_technical.html" %}</div>`
+      } else if (path === '/upload{{data.id}}') {
+        content = `<div class=containermain>{% include "upload.html" %}</div>`
+      }else if (path === '/uploadproject{{data.id}}') {
+        content = `<div class=containermain>{% include "uploadproject.html" %}</div>`
+      }else if (path === '/uploadtechnical{{data.id}}') {
+        content = `<div class=containermain>{% include "uploadtechnical.html" %}</div>`
+      } else if (path === '/update{{data.id}}') {
+        content = `<div class=containermain>{% include "update.html" %}</div>`
+      } else if (path === '/updateproject{{data.id}}') {
+        content = `<div class=containermain>{% include "updateproject.html" %}</div>`
+      } else if (path === '/updatetechnical{{data.id}}') {
+        content = `<div class=containermain>{% include "updatetechnical.html" %}</div>`
+      } else if (path === '/submit') {
+        content = `<div class=containermain>{% include "submit.html" %}</div>`
+      } else if (path === '/admin1') {
+        content = `<div class=containermain>{% include "admin.html" %}</div>`
+      }else if (path === '/adminpaper') {
+        content = `<div class=containermain>{% include "adminpaper.html" %}</div>`
+      }else {
+        content = `<div class=containermain>{% include "home1.html" %}</div>`;
+      }
+
+      app.innerHTML = content;
+    }
+
+    // Render initial content
+    renderContent();
+
+    // Update content when the URL changes
+    window.addEventListener('popstate', renderContent);
+  });
+
+
+  let sidebar = document.querySelector(".sidebar");
+  let closeBtn = document.querySelector("#btn");
+  let searchBtn = document.querySelector(".bx-search");
+
+  closeBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+    menuBtnChange();//calling the function(optional)
+  });
+
+  searchBtn.addEventListener("click", () => { // Sidebar open when you click on the search iocn
+    sidebar.classList.toggle("open");
+    menuBtnChange(); //calling the function(optional)
+  });
+
+  // following are the code to change sidebar button(optional)
+  function menuBtnChange() {
+    if (sidebar.classList.contains("open")) {
+      closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+    } else {
+      closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");//replacing the iocns class
+    }
+  };
+
+  
+</script>

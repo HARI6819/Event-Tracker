@@ -1,0 +1,46 @@
+<div  id="table-container">
+    <table id="customers">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Roll_no</th>
+                <th>Email</th>
+                <th>Event_name</th>
+                <th>Event_cordinator</th>
+                <th>Event_date</th>
+                <th>Lati</th>
+                <th>longi</th>
+                <th>date</th>
+                <th>time</th>
+                <th>Place</th>
+                <th>District</th>
+                <th>image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in datas %}
+            <tr>
+                <td>{{ data.id }}</td>
+                <td>{{ data.Name }}</td>
+                <td>{{ data.Roll_no }}</td>
+                <td>{{ data.Email }}</td>
+                <td>{{ data.Event_name }}</td>
+                <td>{{ data.Event_cordinator }}</td>
+                <td>{{ data.Event_date }}</td>
+                <td>{{ data.Latitude }}</td>
+                <td>{{ data.Longitude }}</td>
+                <td>{{ data.Time }}</td>
+                <td>{{ data.Date }}</td>
+                <td>{{ data.Place }}</td>
+                <td>{{ data.District }}</td>
+                {% if data.Image %}
+                <td>
+                    <img src="{{ data.Image.url }}" alt="Image" style="width:100px;height:auto;">
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>

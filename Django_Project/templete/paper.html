@@ -1,0 +1,55 @@
+<div> 
+    <a href="createnew" class="create_btn">Create New</a>
+    <div  id="table-container">
+    <table id="customers">
+        
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Roll No</th>
+                    <th>Email</th>
+                    <th>Event Name</th>
+                    <th>Event Coordinator</th>
+                    <th>Event Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in datas %}
+                <tr>
+                    <!-- |add:-28 -->
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.Name }}</td>
+                    <td>{{ data.Roll_no }}</td>
+                    <td>{{ data.Email }}</td>
+                    <td>{{ data.Event_name }}</td>
+                    <td>{{ data.Event_cordinator }}</td>
+                    <td>{{ data.Event_date }}</td>
+                    <td><center>
+                        {% if data.Name and data.Roll_no and data.Email and data.Event_name and data.Event_cordinator and data.Event_date and data.Latitude and data.Longitude and data.Place and data.District %}
+                            <button
+                                style="text-decoration: none; background-color: green; padding: 4px 12px; border-radius: 5px; color: white; cursor: default; border: none; outline: none;"
+                                disabled>Completed</button>
+                        {% else %} 
+                            <a href="update{{ data.id }}"
+                               style="text-decoration: none; background-color: rgb(212, 62, 62); padding: 2px 6px;  border-radius: 5px; color: white; display: inline-block;">Edit</a>
+                            <a href="camera.html{{ data.id }}"
+                               style="text-decoration: none; background-color: rgb(68, 125, 205); padding: 2px 6px;  border-radius: 5px; color: white; display: inline-block;">Upload</a>
+                        
+                        <td>
+                            <a href="delete{{ data.id }}" style="text-decoration: none; font-size: 110%;"><i class='bx bx-x'></i></a>
+                        </td>
+                        {% endif %}
+                    </center>
+                    </td>
+                   
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+  
+    </div>
+   
+</div>

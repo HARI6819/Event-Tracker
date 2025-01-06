@@ -1,0 +1,82 @@
+<h2 style="margin-top: 1%; letter-spacing: 1px;">Student Dashboard</h2>
+
+<div class="info_box">
+   {% load socialaccount %}
+
+
+   {% if user.is_authenticated %}
+       <!-- <p>You are signed in as: {{ user.email }}</p> -->
+
+       {% for account in user.socialaccount_set.all %}
+           <h2 class="info_name">Welcome {{ account.extra_data.name }}</h2>
+           <img src="{{ account.extra_data.picture }}" alt="Profile Picture" style="width:50px;height:50px;border-radius: 50%;float: right;position: relative; top: -80%;right: 1%;">
+       {% endfor %}
+   {% endif %}
+</div>
+
+
+
+<div class="grid">
+   <a href="#" style="text-decoration: none;">
+     
+         <div class="one" style="width: 100%;">
+            <div class="circle"><i class='bx bxs-bar-chart-alt-2'></i></div>
+            <p style="float: left;">Total</p><br>
+            {% for data in datas %}
+            {% if forloop.last %}
+            {% for datas in datasproject %}
+            {% if forloop.last %}
+            {% for datas1 in datastechnical %}
+            {% if forloop.last %}
+                <h1>{{ data.id|add:datas.id|add:datas1.id}}</h1>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+         </div>
+      
+   </a>
+   
+   <a href="paper1" style="text-decoration: none;">
+      
+         <div class="two" style="width: 100%;">
+            <div class="circle"><i class='bx bx-receipt'></i></div>
+            <p style="float: left;">Paper</p><br>
+            {% for data in datas %}
+            {% if forloop.last %}
+                <h1>{{ data.id }}</h1>
+            {% endif %}
+            {% endfor %}
+         </div>
+   </a>
+   
+   <a href="project1" style="text-decoration: none;">
+      
+         <div class="three" style="width: 100%;">
+            <div class="circle"><i class='bx bxs-cube'></i></div>
+            <p style="float: left;">Project</p><br>
+            {% for data in datasproject %}
+            {% if forloop.last %}
+                <h1>{{ data.id }}</h1>
+            {% endif %}
+            {% endfor %}
+         </div>
+     
+   </a>
+   
+   <a href="technical" style="text-decoration: none;">
+      
+         <div class="four" style="width: 100%;">
+            <div class="circle"><i class='bx bx-code-block'></i></div>
+            <p style="float: left;">Technical</p><br>
+            {% for data in datastechnical %}
+            {% if forloop.last %}
+                <h1>{{ data.id }}</h1>
+            {% endif %}
+            {% endfor %}
+         </div>
+      
+   </a>
+</div>

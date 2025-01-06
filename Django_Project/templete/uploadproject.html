@@ -1,0 +1,49 @@
+{% block content %}
+<div class="containerbox">
+    <div class="title">Upload</div>
+    <div class="content">
+        <div id="location"></div>
+        
+        <form action="uploadproject{{data.id}}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">Latitude</span>
+                    <input type="text" placeholder="Latitude" name="latitude" id="latitude" readonly>
+                </div>
+                <div class="input-box">
+                    <span class="details">Longitude</span>
+                    <input type="text" placeholder="Longitude" name="longitude" id="longitude" readonly>
+                </div>
+                <div class="input-box">
+                    <span class="details">Time</span>
+                    <input type="text" placeholder="Time" name="locationtime" id="time" readonly>
+                </div>
+                <div class="input-box">
+                    <span class="details">Date</span>
+                    <input type="text" placeholder="Date" name="locationdate" id="date" readonly>
+                </div>
+                <div class="input-box">
+                    <span class="details">Place</span>
+                    <input type="text" placeholder="Place" name="place" id="place" readonly>
+                </div>
+                <div class="input-box">
+                    <span class="details">District</span>
+                    <input type="text" placeholder="District" name="District" id="district" readonly>
+                </div>
+
+                <div>
+                    <span class="details">Geotag photo</span><br>
+                    <input type="file" value="image.png" name="photo">
+                </div>
+            </div>
+            <div class="button">
+                <input type="submit" value="Submit" style="float: left;">
+            </div>
+        </form>
+        
+    </div>
+</div>
+
+
+{% endblock %}
