@@ -1075,7 +1075,6 @@
     window.addEventListener('popstate', renderContent);
   });
 
-
   let sidebar = document.querySelector(".sidebar");
   let closeBtn = document.querySelector("#btn");
   let searchBtn = document.querySelector(".bx-search");
@@ -1085,7 +1084,7 @@
     menuBtnChange();//calling the function(optional)
   });
 
-  searchBtn.addEventListener("click", () => { // Sidebar open when you click on the search iocn
+  searchBtn.addEventListener("click", () => { 
     sidebar.classList.toggle("open");
     menuBtnChange(); //calling the function(optional)
   });

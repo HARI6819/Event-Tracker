@@ -54,8 +54,8 @@ SOCIALACCOUNT_PROVIDERS = {
             'email'
         ],
         # 'APP': {
-        #     'client_id': os.environ['318815898858-uk8idujel8dlmu6p2h7fjpurrfqq5pn3.apps.googleusercontent.com'],
-        #     'secret': os.environ['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'],
+        #     'client_id': os.environ['// your client id'],
+        #     'secret': os.environ['// your secret id'],
         # },
         'AUTH_PARAMS': {
             'access_type':'online',
